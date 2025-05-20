@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chess Club Leaderboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #1c1c1c, #000000);
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5em;
+      border-bottom: 4px solid gold;
+      animation: slideInDown 1s ease-out;
+      position: relative;
+    }
+
+    @keyframes slideInDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Info button style */
+    #info-btn {
+      position: absolute;
+      top: 22px;
+      right: 20px;
+      background: gold;
+      color: black;
+      border: none;
+      padding: 8px 15px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: background 0.3s ease;
+      box-shadow: 0 0 8px gold;
+    }
+    #info-btn:hover {
+      background: #d4af37;
+      box-shadow: 0 0 12px #d4af37;
+    }
+
+    .leaderboard {
+      max-width: 700px;
+      margin: 50px auto;
+      background: rgba(20, 20, 20, 0.85);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+      animation: popUp 1.2s ease-in-out;
+    }
+
+    @keyframes popUp {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .leaderboard h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: gold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    th, td {
+      padding: 15px;
+      font-size: 1.2em;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 215, 0, 0.3);
+      color: gold;
+      text-shadow: 1px 1px 2px black;
+    }
+
+    tr:nth-child(even) {
+      background: rgba(50, 50, 50, 0.4);
+    }
+
+    tr:hover {
+      background: rgba(255, 215, 0, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    .watermark {
+      margin-top: 50px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      font-size: 0.9em;
+      color: #ccc;
+      border-top: 1px solid #444;
+      animation: fadeIn 2s ease;
+    }
+
+    .crown {
+      color: gold;
+      font-size: 1.3em;
+      animation: crownBounce 1s infinite alternate;
+    }
+
+    @keyframes crownBounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-5px); }
+    }
+
+    .profile-pic {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    /* Info popup styles */
+    #info-popup {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(30, 30, 30, 0.95);
+      padding: 30px 25px;
+      max-width: 400px;
+      color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 25px gold;
+      display: none;
+      z-index: 1000;
+      font-size: 1.1em;
+      font-family: 'Montserrat', sans-serif;
+      text-align: left;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    #info-popup.show {
+      display: block;
+    }
+
+    #info-popup .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      background: transparent;
+      border: none;
+      font-size: 1.5em;
+      font-weight: 700;
+      color: gold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    #info-popup .close-btn:hover {
+      color: #ffd700cc;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  ♛ School Chess Club ♚
+  <button id="info-btn">Info</button>
+</header>
+
+<div class="leaderboard">
+  <h2>Leaderboard - ELO Ratings</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>ELO</th>
+      </tr>
+    </thead>
+    <tbody id="leaderboard-body">
+      <!-- Player rows inserted here -->
+    </tbody>
+  </table>
+</div>
+
+<div class="watermark">
+  Owners: Edi, Lori. Website designers: Martin
+</div>
+
+<!-- Info Popup -->
+<div id="info-popup">
+  <button class="close-btn" title="Close">&times;</button>
+  <p>
+    Welcome to the 5D chess club!♟️<br><br>
+    Here we will share our chess clips🎥, interesting moments and make tournaments while video calling, just like a real one! if we were good enough tho 😂.<br><br>
+    Everyone will have an ELO, aka the "skill points". I and Lacika will decide everyone's ELO, cuz we... Idk... 💀. JUST LIVE WITH THAT INFO OK?<br><br>
+    If you share an interesting game where you achieved greatly, your ELO point will rise! Whoever's ELO is the biggest, that person is the best!<br><br>
+    Have fun and good luck checkmateing others😁
+  </p>
+</div>
+
+<script>
+  // 🎯 Edit player ELOs and image URLs here!
+  const players = [
+    { name: "Martin", elo: 340, img: "https://i.imgur.com/uIgDDDd.png" },
+    { name: "Edy", elo: 630, img: "https://i.imgur.com/VUie9j6.jpeg" },
+    { name: "Lori", elo: 630, img: "https://i.imgur.com/ALMtWAw.jpeg" },
+    { name: "Edu", elo: 360, img: "https://i.imgur.com/iGpvJK9.png" },
+    { name: "Robi", elo: 490, img: "https://i.imgur.com/Qa6QrfI.jpeg" }
+  ];
+
+  players.sort((a, b) => b.elo - a.elo);
+
+  const tbody = document.getElementById("leaderboard-body");
+  players.forEach((player, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index === 0 ? `<span class='crown'>👑</span>` : ''} <img class="profile-pic" src="${player.img}" alt=""> ${player.name}</td>
+      <td>${player.elo}</td>
+    `;
+    tbody.appendChild(row);
+  });
+
+  // Info popup functionality
+  const infoBtn = document.getElementById('info-btn');
+  const infoPopup = document.getElementById('info-popup');
+  const closeBtn = infoPopup.querySelector('.close-btn');
+
+  infoBtn.addEventListener('click', () => {
+    infoPopup.classList.add('show');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    infoPopup.classList.remove('show');
+  });
+</script>
+
+</body>
+</html>
