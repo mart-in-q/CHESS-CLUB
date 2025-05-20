@@ -93,12 +93,14 @@
       padding: 15px;
       font-size: 1.2em;
       text-align: left;
+      cursor: pointer; /* show pointer cursor on rows */
     }
 
     th {
       background: rgba(255, 215, 0, 0.3);
       color: gold;
       text-shadow: 1px 1px 2px black;
+      cursor: default; /* don't show pointer on header */
     }
 
     tr:nth-child(even) {
@@ -141,7 +143,7 @@
     }
 
     /* Info popup styles */
-    #info-popup {
+    #info-popup, #bio-popup {
       position: fixed;
       top: 20%;
       left: 50%;
@@ -159,11 +161,11 @@
       text-align: left;
       animation: fadeIn 0.5s ease forwards;
     }
-    #info-popup.show {
+    #info-popup.show, #bio-popup.show {
       display: block;
     }
 
-    #info-popup .close-btn {
+    #info-popup .close-btn, #bio-popup .close-btn {
       position: absolute;
       top: 8px;
       right: 12px;
@@ -175,7 +177,7 @@
       cursor: pointer;
       transition: color 0.3s ease;
     }
-    #info-popup .close-btn:hover {
+    #info-popup .close-btn:hover, #bio-popup .close-btn:hover {
       color: #ffd700cc;
     }
   </style>
@@ -218,29 +220,77 @@
   </p>
 </div>
 
+<!-- Bio Popup -->
+<div id="bio-popup">
+  <button class="close-btn" title="Close">&times;</button>
+  <div id="bio-content"></div>
+</div>
+
 <script>
-  // 🎯 Edit player ELOs and image URLs here!
+  // 🎯 Edit player ELOs, image URLs, and bios here!
   const players = [
-    { name: "Martin", elo: 340, img: "https://i.imgur.com/uIgDDDd.png" },
-    { name: "Edy", elo: 630, img: "https://i.imgur.com/VUie9j6.jpeg" },
-    { name: "Lori", elo: 630, img: "https://i.imgur.com/ALMtWAw.jpeg" },
-    { name: "Edu", elo: 360, img: "https://i.imgur.com/iGpvJK9.png" },
-    { name: "Robi", elo: 490, img: "https://i.imgur.com/Qa6QrfI.jpeg" }
+    { 
+      name: "Martin", 
+      elo: 340, 
+      img: "https://i.imgur.com/uIgDDDd.png",
+      bio: "Martin is the mastermind behind the website design and a solid chess player who loves strategy and tactics."
+    },
+    { 
+      name: "Edy", 
+      elo: 630, 
+      img: "https://i.imgur.com/VUie9j6.jpeg",
+      bio: "Edy is one of the top players with a sharp mind and great endgame skills."
+    },
+    { 
+      name: "Lori", 
+      elo: 630, 
+      img: "https://i.imgur.com/ALMtWAw.jpeg",
+      bio: "Lori is a fierce competitor who excels in opening theory and aggressive play."
+    },
+    { 
+      name: "Edu", 
+      elo: 360, 
+      img: "https://i.imgur.com/iGpvJK9.png",
+      bio: "Edu enjoys casual games and is always eager to learn new strategies."
+    },
+    { 
+      name: "Robi", 
+      elo: 490, 
+      img: "https://i.imgur.com/Qa6QrfI.jpeg",
+      bio: "Robi is known for his creative playstyle and unpredictable moves."
+    }
   ];
 
   players.sort((a, b) => b.elo - a.elo);
 
   const tbody = document.getElementById("leaderboard-body");
+  const bioPopup = document.getElementById("bio-popup");
+  const bioContent = document.getElementById("bio-content");
+  const bioCloseBtn = bioPopup.querySelector(".close-btn");
+
   players.forEach((player, index) => {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${index === 0 ? `<span class='crown'>👑</span>` : ''} <img class="profile-pic" src="${player.img}" alt=""> ${player.name}</td>
       <td>${player.elo}</td>
     `;
+    // Add click event to show bio
+    row.addEventListener("click", () => {
+      bioContent.innerHTML = `
+        <h3>${player.name}</h3>
+        <img src="${player.img}" alt="${player.name}" style="width:80px; height:80px; border-radius:50%; margin-bottom:15px; object-fit:cover; display:block; margin-left:auto; margin-right:auto;">
+        <p>${player.bio}</p>
+      `;
+      bioPopup.classList.add("show");
+    });
     tbody.appendChild(row);
   });
 
-  // Info popup functionality
+  bioCloseBtn.addEventListener("click", () => {
+    bioPopup.classList.remove("show");
+  });
+
+  // Existing info popup functionality
   const infoBtn = document.getElementById('info-btn');
   const infoPopup = document.getElementById('info-popup');
   const closeBtn = infoPopup.querySelector('.close-btn');
