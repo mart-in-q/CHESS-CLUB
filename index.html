@@ -41,7 +41,6 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* Info button style */
     #info-btn {
       position: absolute;
       top: 22px;
@@ -93,14 +92,14 @@
       padding: 15px;
       font-size: 1.2em;
       text-align: left;
-      cursor: pointer; /* show pointer cursor on rows */
+      cursor: pointer;
     }
 
     th {
       background: rgba(255, 215, 0, 0.3);
       color: gold;
       text-shadow: 1px 1px 2px black;
-      cursor: default; /* don't show pointer on header */
+      cursor: default;
     }
 
     tr:nth-child(even) {
@@ -142,7 +141,6 @@
       vertical-align: middle;
     }
 
-    /* Info popup styles */
     #info-popup, #bio-popup {
       position: fixed;
       top: 20%;
@@ -227,37 +225,47 @@
 </div>
 
 <script>
-  // 🎯 Edit player ELOs, image URLs, and bios here!
+  // 🎯 Edit player ELOs, image URLs, bios, wins & losses here!
   const players = [
     { 
       name: "Martin", 
       elo: 340, 
       img: "https://i.imgur.com/uIgDDDd.png",
-      bio: "sigma sigma boy"
+      bio: "sigma sigma boy",
+      wins: 0,
+      losses: 0
     },
     { 
       name: "Edy", 
       elo: 630, 
       img: "https://i.imgur.com/VUie9j6.jpeg",
-      bio: "Hello! I'm EDY!! My favorite board game is chess♟.I play chess every day,and I watch chess content basically at any given time I can.And also,I'm known for Queen trading whenever I can(and when it makes sense to). I'd like to play against you. My chess profile name: EDYBRAWL95"
+      bio: "Hello! I'm EDY!! My favorite board game is chess♟. I play chess every day, and I watch chess content basically at any given time I can. I'm known for Queen trading whenever I can. I'd like to play against you. Chess profile: EDYBRAWL95",
+      wins: 0,
+      losses: 0
     },
     { 
       name: "Lori", 
       elo: 630, 
       img: "https://i.imgur.com/ALMtWAw.jpeg",
-      bio: "Not a femboy 0-0."
+      bio: "Not a femboy 0-0.",
+      wins: 0,
+      losses: 0
     },
     { 
       name: "Edu", 
       elo: 360, 
       img: "https://i.imgur.com/iGpvJK9.png",
-      bio: "OFFLINE"
+      bio: "OFFLINE",
+      wins: 0,
+      losses: 0
     },
     { 
       name: "Robi", 
       elo: 490, 
       img: "https://i.imgur.com/Qa6QrfI.jpeg",
-      bio: "no bio yet"
+      bio: "no bio yet",
+      wins: 0,
+      losses: 0
     }
   ];
 
@@ -274,12 +282,13 @@
       <td>${index === 0 ? `<span class='crown'>👑</span>` : ''} <img class="profile-pic" src="${player.img}" alt=""> ${player.name}</td>
       <td>${player.elo}</td>
     `;
-    // Add click event to show bio
     row.addEventListener("click", () => {
       bioContent.innerHTML = `
         <h3>${player.name}</h3>
         <img src="${player.img}" alt="${player.name}" style="width:80px; height:80px; border-radius:50%; margin-bottom:15px; object-fit:cover; display:block; margin-left:auto; margin-right:auto;">
         <p>${player.bio}</p>
+        <p><strong>Wins:</strong> ${player.wins}</p>
+        <p><strong>Losses:</strong> ${player.losses}</p>
       `;
       bioPopup.classList.add("show");
     });
@@ -290,7 +299,6 @@
     bioPopup.classList.remove("show");
   });
 
-  // Existing info popup functionality
   const infoBtn = document.getElementById('info-btn');
   const infoPopup = document.getElementById('info-popup');
   const closeBtn = infoPopup.querySelector('.close-btn');
